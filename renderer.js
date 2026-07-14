@@ -124,7 +124,7 @@ function renderSections() {
 
       const input = document.createElement('input');
       input.type = 'text';
-      input.placeholder = option.expectsValue ? option.valuePlaceholder || 'value' : 'leave blank to skip';
+      input.placeholder = option.expectsValue ? option.valuePlaceholder || 'value' : 'Leave blank to skip';
       input.dataset.optionId = option.id;
       input.title = option.description;
       input.value = state.optionValues[option.id] || '';
