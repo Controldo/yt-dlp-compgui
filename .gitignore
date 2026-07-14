@@ -1,0 +1,5 @@
+node_modules/
+*.log
+yt-dlp-config.conf
+dist/
+.DS_Store

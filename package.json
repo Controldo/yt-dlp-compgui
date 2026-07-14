@@ -1,0 +1,12 @@
+{
+  "name": "yt-dlp-compgui",
+  "version": "1.0.0",
+  "description": "Electron interface for yt-dlp help options and config generation",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^43.1.0"
+  }
+}
