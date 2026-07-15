@@ -172,34 +172,69 @@ pre {
 }
 
 .tab-bar {
+  position: relative;
+  z-index: 10;
+
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 14px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  gap: 0px;
+  margin-bottom: -1px;
+
+  border-radius: 10px 10px 0 0;
+}
+
+.tab-bar::-webkit-scrollbar {
+  display: none;
 }
 
 .tab-button {
   padding: 10px 14px;
-  border-radius: 999px;
+  border-radius: 0px;  
+  border: 1px solid var(--border);
+
+  background: rgba(37, 37, 37, 0.96);
+  transition: transform 140ms ease, background 140ms ease;
+}
+
+.tab-button:first-child {
+  border-radius: 10px 0 0 0;
+}
+
+.tab-button:last-child {
+  border-radius: 0 10px 0 0;
+}
+
+.tab-button:hover {
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  border-bottom: none;
+  transform: translateY(0px);
 }
 
 .tab-button.active {
-  border-color: rgba(255, 88, 88, 0.75);
-  background: var(--accent-soft);
+  border-bottom: none;
+  border-top: 1px solid var(--accent);
+  border-left-color: var(--border);
+  border-right-color: var(--border);
+  background: rgba(37, 37, 37, 0.96);
   color: var(--accent-strong);
+  margin-bottom: -1px;
 }
 
 .tab-panels {
   display: grid;
-  gap: 18px;
+  gap: 0px;
 }
 
 /* Panel for command tabs */
 .section-panel {
   display: none;
   padding: 18px;
-  border-radius: 10px;
+  border-radius: 0 0 10px 10px;
   border: 1px solid var(--border);
+  border-top: none;
   background: rgba(37, 37, 37, 0.96);
   box-shadow: var(--shadow);
 }

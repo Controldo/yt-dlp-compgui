@@ -82,7 +82,7 @@ function renderSections() {
     tabButton.type = 'button';
     tabButton.textContent = section.title;
     tabButton.dataset.sectionIndex = String(sectionIndex);
-    tabButton.addEventListener('click', () => setActiveSection(sectionIndex));
+    tabButton.addEventListener('click', () => setActiveSection(sectionIndex)); // Change section when tab is clicked
     tabBar.appendChild(tabButton);
 
     const panel = document.createElement('section');
