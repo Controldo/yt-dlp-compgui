@@ -30,14 +30,19 @@ function buildCommandArgs() {
 
   for (const section of state.sections) {
     for (const option of section.options) {
-      const value = String(state.optionValues[option.id] || '').trim();
-      if (!value) {
-        continue;
-      }
+      const raw = state.optionValues[option.id];
 
-      args.push(option.flags[0]);
       if (option.expectsValue) {
-        args.push(value);
+        const value = String(raw || '').trim();
+        if (!value) {
+          continue;
+        }
+        args.push(option.flags[0], value);
+      } else {
+        if (!raw) {
+          continue;
+        }
+        args.push(option.flags[0]);
       }
     }
   }
@@ -123,15 +128,25 @@ function renderSections() {
       valueCell.className = 'value-cell';
 
       const input = document.createElement('input');
-      input.type = 'text';
-      input.placeholder = option.expectsValue ? option.valuePlaceholder || 'value' : 'Leave blank to skip';
       input.dataset.optionId = option.id;
       input.title = option.description;
-      input.value = state.optionValues[option.id] || '';
-      input.addEventListener('input', (event) => {
-        state.optionValues[option.id] = event.target.value;
-        refreshCommandPreview();
-      });
+
+      if (option.expectsValue) {
+        input.type = 'text';
+        input.placeholder = option.valuePlaceholder || 'value';
+        input.value = state.optionValues[option.id] || '';
+        input.addEventListener('input', (event) => {
+          state.optionValues[option.id] = event.target.value;
+          refreshCommandPreview();
+        });
+      } else {
+        input.type = 'checkbox';
+        input.checked = state.optionValues[option.id] || false;
+        input.addEventListener('change', (event) => {
+          state.optionValues[option.id] = event.target.checked;
+          refreshCommandPreview();
+        });
+      }
 
       valueCell.appendChild(input);
       row.append(optionCell, descriptionCell, valueCell);

@@ -86,6 +86,13 @@ button {
   font: inherit;
 }
 
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
 input[type="url"],
 input[type="text"] {
   width: 100%;
