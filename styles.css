@@ -1,15 +1,15 @@
 :root {
   color-scheme: dark;
-  --bg: #160b0b;
-  --bg-elevated: #231212;
-  --bg-surface: #301717;
+  --bg: rgb(12, 12, 12);
+  --bg-elevated: rgb(37, 37, 37, 0.96);
+  --bg-surface: rgb(48, 23, 23);
   --border: rgba(255, 255, 255, 0.09);
-  --text: #ffffff;
-  --muted: #ffffffb8;
-  --accent: #ff5858;
-  --accent-strong: #fc7d7d;
+  --text: rgb(255, 255, 255);
+  --muted: rgba(255, 255, 255, 0.72);
+  --accent: rgb(234, 50, 50);
+  --accent-strong: rgb(252, 125, 125);
   --accent-soft: rgba(255, 88, 88, 0.16);
-  --danger: #ff7b72;
+  --danger: rgb(255, 123, 114);
   --shadow: 0 22px 65px rgba(0, 0, 0, 0.42);
 }
 
@@ -20,7 +20,7 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: #0c0c0c;
+  background: var(--bg);
   color: var(--text);
   font-family: "Segoe UI", "Trebuchet MS", sans-serif;
 }
@@ -64,7 +64,7 @@ h1 {
 .hero-panel,
 .preview-card,
 .output-card {
-  background: rgba(37, 37, 37, 0.96);
+  background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: 10px;
   box-shadow: var(--shadow);
@@ -90,7 +90,7 @@ input[type="url"],
 input[type="text"] {
   width: 100%;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--border);
   background: rgba(12, 12, 12, 0.9);
   color: var(--text);
   padding: 12px 14px;
@@ -110,9 +110,9 @@ input[type="text"]:focus {
 }
 
 button {
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid var(--border);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--bg-elevated);
   color: var(--text);
   padding: 11px 16px;
   cursor: pointer;
@@ -122,12 +122,12 @@ button {
 button:hover {
   transform: translateY(-1px);
   border-color: rgba(255, 88, 88, 0.56);
-  background: rgba(255, 88, 88, 0.11);
+  background: var(--accent-soft);
 }
 
 button.primary {
-  background:  rgb(234, 50, 50);
-  color: #ffffff;
+  background: var(--accent);
+  color: var(--text);
   font-weight: 700;
 }
 
@@ -192,9 +192,7 @@ pre {
 .tab-button {
   padding: 10px 14px;
   border-radius: 0px;  
-  border: 1px solid var(--border);
 
-  background: rgba(37, 37, 37, 0.96);
   transition: transform 140ms ease, background 140ms ease;
 }
 
@@ -218,7 +216,7 @@ pre {
   border-top: 1px solid var(--accent);
   border-left-color: var(--border);
   border-right-color: var(--border);
-  background: rgba(37, 37, 37, 0.96);
+  background: var(--bg-elevated);
   color: var(--accent-strong);
   margin-bottom: -1px;
 }
@@ -235,7 +233,7 @@ pre {
   border-radius: 0 0 10px 10px;
   border: 1px solid var(--border);
   border-top: none;
-  background: rgba(37, 37, 37, 0.96);
+  background: var(--bg-elevated);
   box-shadow: var(--shadow);
 }
 
@@ -265,12 +263,12 @@ pre {
 
 .section-table tbody td {
   padding: 12px 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--border);
   vertical-align: top;
 }
 
 .section-table tbody tr:hover {
-  background: rgba(255, 88, 88, 0.05);
+  background: var(--accent-soft);
 }
 
 .option-spec {
@@ -284,7 +282,7 @@ pre {
 .option-spec code {
   padding: 4px 8px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--border);
 }
 
 .description-cell {
