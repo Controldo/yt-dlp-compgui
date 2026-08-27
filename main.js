@@ -110,18 +110,17 @@ function collectCommandParts(optionsById, sections) {
   for (const section of sections) {
     for (const option of section.options) {
       const entry = optionsById[option.id];
-      if (!entry) {
-        continue;
-      }
-
-      const value = String(entry).trim();
-      if (!value) {
-        continue;
-      }
 
       if (option.expectsValue) {
+        const value = String(entry || '').trim();
+        if (!value) {
+          continue;
+        }
         parts.push(option.flags[0], value);
       } else {
+        if (!entry) {
+          continue;
+        }
         parts.push(option.flags[0]);
       }
     }
@@ -216,14 +215,18 @@ ipcMain.handle('config:save', async (_event, payload) => {
 
   for (const section of sections) {
     for (const option of section.options) {
-      const value = String(options[option.id] || '').trim();
-      if (!value) {
-        continue;
-      }
+      const raw = options[option.id];
 
       if (option.expectsValue) {
+        const value = String(raw || '').trim();
+        if (!value) {
+          continue;
+        }
         lines.push(`${option.flags[0]} ${value}`);
       } else {
+        if (!raw) {
+          continue;
+        }
         lines.push(option.flags[0]);
       }
     }

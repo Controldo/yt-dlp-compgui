@@ -24,20 +24,28 @@ function escapeHtml(value) {
     .replaceAll("'", '&#39;');
 }
 
+// Outputs array of selected args (and values if applicable)
 function buildCommandArgs() {
   const args = [];
   const url = urlInput.value.trim();
 
   for (const section of state.sections) {
     for (const option of section.options) {
-      const value = String(state.optionValues[option.id] || '').trim();
-      if (!value) {
-        continue;
-      }
+      const raw = state.optionValues[option.id];
 
-      args.push(option.flags[0]);
+      // Either the option is a flag or requires an input value
+      // Skip if option is not selected/no value was input
       if (option.expectsValue) {
-        args.push(value);
+        const value = String(raw || '').trim();
+        if (!value) {
+          continue;
+        }
+        args.push(option.flags[0], value);
+      } else {
+        if (!raw) {
+          continue;
+        }
+        args.push(option.flags[0]);
       }
     }
   }
@@ -54,6 +62,7 @@ function refreshCommandPreview() {
   commandPreview.textContent = [state.executable, ...args].join(' ');
 }
 
+// "Section" meaning the tabs, active meaning the one currently selected
 function setActiveSection(index) {
   state.activeSectionIndex = index;
 
@@ -66,7 +75,7 @@ function setActiveSection(index) {
   }
 }
 
-function renderSections() {
+function renderTabSections() {
   tabBar.innerHTML = '';
   tabPanels.innerHTML = '';
   sectionCount.textContent = `${state.sections.length} sections`;
@@ -76,13 +85,18 @@ function renderSections() {
     return;
   }
 
+  buildTabSections();
+  setActiveSection(0);
+}
+
+function buildTabSections() {
   state.sections.forEach((section, sectionIndex) => {
     const tabButton = document.createElement('button');
     tabButton.className = 'tab-button';
     tabButton.type = 'button';
     tabButton.textContent = section.title;
     tabButton.dataset.sectionIndex = String(sectionIndex);
-    tabButton.addEventListener('click', () => setActiveSection(sectionIndex));
+    tabButton.addEventListener('click', () => setActiveSection(sectionIndex)); // Change section when tab is clicked
     tabBar.appendChild(tabButton);
 
     const panel = document.createElement('section');
@@ -122,16 +136,7 @@ function renderSections() {
       const valueCell = document.createElement('td');
       valueCell.className = 'value-cell';
 
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.placeholder = option.expectsValue ? option.valuePlaceholder || 'value' : 'leave blank to skip';
-      input.dataset.optionId = option.id;
-      input.title = option.description;
-      input.value = state.optionValues[option.id] || '';
-      input.addEventListener('input', (event) => {
-        state.optionValues[option.id] = event.target.value;
-        refreshCommandPreview();
-      });
+      const input = createInputForOption(option);
 
       valueCell.appendChild(input);
       row.append(optionCell, descriptionCell, valueCell);
@@ -142,8 +147,31 @@ function renderSections() {
     panel.appendChild(table);
     tabPanels.appendChild(panel);
   });
+}
 
-  setActiveSection(0);
+function createInputForOption(option) {
+  const input = document.createElement('input');
+  input.dataset.optionId = option.id;
+  input.title = option.description;
+
+  if (option.expectsValue) {
+    input.type = 'text';
+    input.placeholder = option.valuePlaceholder || 'value';
+    input.value = state.optionValues[option.id] || '';
+    input.addEventListener('input', (event) => {
+      state.optionValues[option.id] = event.target.value;
+      refreshCommandPreview();
+    });
+  } else {
+    input.type = 'checkbox';
+    input.checked = state.optionValues[option.id] || false;
+    input.addEventListener('change', (event) => {
+      state.optionValues[option.id] = event.target.checked;
+      refreshCommandPreview();
+    });
+  }
+
+  return input;
 }
 
 async function loadHelp() {
@@ -152,7 +180,7 @@ async function loadHelp() {
     state.executable = result.executable;
     state.sections = result.sections;
     statusLine.textContent = `Loaded help output from ${result.executable}.`;
-    renderSections();
+    renderTabSections();
     refreshCommandPreview();
   } catch (error) {
     statusLine.textContent = `Unable to load yt-dlp help output: ${error.message}`;

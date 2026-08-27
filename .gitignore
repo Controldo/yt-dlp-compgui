@@ -3,3 +3,4 @@ node_modules/
 yt-dlp-config.conf
 dist/
 .DS_Store
+structure.txt
